@@ -1,0 +1,48 @@
+
+---
+
+## Task 2: Create Emotion Detection Application (2 points)
+
+### Activity 1: `emotion_detection.py` - Application Function (1 point)
+
+**URL:** `https://github.com/Sandeep992299/Emotion-Detector/blob/main/emotion_detection.py`
+
+```python
+# emotion_detection.py - Emotion Detection using Watson NLP
+
+import watson_nlp
+
+def emotion_detector(text_to_analyze):
+    """
+    Detects emotions from the input text using Watson NLP.
+    Returns a dictionary with emotion scores and the dominant emotion.
+    """
+    # Load the emotion classification model
+    emotion_model = watson_nlp.load('emotion_aggregate-workflow_en')
+
+    # Run the emotion analysis
+    emotion_result = emotion_model.run(text_to_analyze)
+
+    # Extract emotion scores
+    emotions = emotion_result.emotion
+    
+    # Format the output
+    emotion_dict = {
+        'anger': emotions.get('anger', 0.0),
+        'disgust': emotions.get('disgust', 0.0),
+        'fear': emotions.get('fear', 0.0),
+        'joy': emotions.get('joy', 0.0),
+        'sadness': emotions.get('sadness', 0.0)
+    }
+    
+    # Find the dominant emotion
+    dominant_emotion = max(emotion_dict, key=emotion_dict.get)
+    emotion_dict['dominant_emotion'] = dominant_emotion
+    
+    return emotion_dict
+
+# Test the function (for Activity 2)
+if __name__ == "__main__":
+    test_text = "I am so happy and excited about this project!"
+    result = emotion_detector(test_text)
+    print(result)
